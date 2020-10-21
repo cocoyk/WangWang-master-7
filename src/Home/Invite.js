@@ -170,6 +170,7 @@ function Invite({ navigation }) {
         {imgList.map((el,index) => {
           return (
             <Image
+              key={index}
               style={{
                 borderWidth: pxToDp(20),
                 borderColor: "white",
