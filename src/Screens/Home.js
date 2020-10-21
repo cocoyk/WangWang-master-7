@@ -169,7 +169,7 @@ function Home({ navigation }) {
   let renderSlides = typeList.map((el, slideIndex) => {
     if (slideIndex === 0) {
       return (
-        <View>
+        <View key={slideIndex}>
           {/* 返回顶部 */}
           <TouchableOpacity
             activeOpacity={0.9}
@@ -455,7 +455,7 @@ function Home({ navigation }) {
       );
     } else {
       return (
-        <ScrollView onScroll={onSlideScroll}>
+        <ScrollView onScroll={onSlideScroll} key={slideIndex}>
           <SwiperView
             resetPage={resetPage}
             id={slideIndex}

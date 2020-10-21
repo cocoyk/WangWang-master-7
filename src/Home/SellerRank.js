@@ -132,7 +132,7 @@ function SellerRank({ navigation }) {
             >
               {item.goods_id.slice(0, 3).map((el, index) => {
                 return (
-                  <View style={{ alignItems: "center" }}>
+                  <View style={{ alignItems: "center" }} key={index}>
                     <Image
                       style={{
                         marginTop: pxToDp(20),

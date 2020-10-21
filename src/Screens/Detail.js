@@ -326,6 +326,7 @@ function Detail({ navigation, route }) {
                   {imgList.map((item, index) => {
                     return (
                       <Image
+                        key={index}
                         id={index}
                         style={styles.thumbnail}
                         source={{ uri: item }}

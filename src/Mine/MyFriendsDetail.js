@@ -228,7 +228,7 @@ function MyFriendsDetail({ navigation }) {
             style={{
               marginTop: pxToDp(60),
               alignSelf: "stretch",
-              backgroundColor: "#f5f5f9",
+              //backgroundColor: "#f5f5f9",
               marginHorizontal: pxToDp(35),
               padding: pxToDp(30),
               borderRadius: pxToDp(10),
