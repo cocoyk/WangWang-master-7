@@ -64,7 +64,7 @@ var styles = StyleSheet.create({
   container: {
     padding: pxToDp(30),
     flex: 1,
-    alignItems: "center",
+    //alignItems: "center",
     backgroundColor: "#FB820E",
     justifyContent: "flex-start",
     alignItems: "flex-start",
