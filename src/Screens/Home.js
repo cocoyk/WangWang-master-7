@@ -253,7 +253,8 @@ function Home({ navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    Toast.show("敬请期待", Toast.SHORT);
+                    //Toast.show("敬请期待", Toast.SHORT);
+                    navigation.navigate("PlatformPage",{ platform: "2" });
                   }}
                   activeOpacity={0.9}
                   style={styles.iconchild}

@@ -207,7 +207,7 @@ export default function App() {
           component={SellerRankMore}
         />
         <Stack.Screen
-          options={{ headerTitle: "淘宝" }}
+          options={{ headerTitle: "淘宝",headerBackTitleVisible: false }}
           name="PlatformPage"
           component={PlatformPage}
         />

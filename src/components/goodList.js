@@ -126,7 +126,7 @@ function GoodsList(props) {
                 /> */}
                 <View
                   style={{
-                    direction: "column",
+                    dir: "column",
                     width: pxToDp(370),
                   }}
                 >
@@ -163,7 +163,7 @@ function GoodsList(props) {
                         marginTop: pxToDp(10),
                       }}
                     >
-                      ￥原价{item.min_group_price.toFixed(2)}
+                      ￥原价{(item.min_group_price*1).toFixed(2)}
                     </Text>
                     <Text style={styles.saleacount}>
                       已售{item.sold_quantity}单
@@ -181,7 +181,7 @@ function GoodsList(props) {
             ></View>
             <View style={styles.down}>
               <View style={styles.price}>
-                <View style={{ direction: "column" }}>
+                <View style={{ dir: "column" }}>
                   <Text
                     style={{
                       color: "#ff4d00",
