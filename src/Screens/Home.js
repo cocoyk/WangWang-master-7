@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useRef, useEffect } from "react";
-import pxToDp from "../util/util";
+import pxToDp,{STATUS_BAR_HEIGHT} from "../util/util";
 
 import GoodsList from "../components/goodList.js";
 // import SearchModal from './component/searchModal';
@@ -521,7 +521,7 @@ function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      <StatusBar translucent={true} backgroundColor="#fff" barStyle="dark-content" />
       {/* <LinearGradient
         style={{
           borderBottomLeftRadius: 25,
@@ -939,6 +939,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f9",
     justifyContent: "flex-start",
     alignItems: "center",
+    paddingTop:STATUS_BAR_HEIGHT,
   },
   btn: {
     height: 35,

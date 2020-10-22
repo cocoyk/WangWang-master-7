@@ -1,6 +1,8 @@
 package com.wangwang;
 
 import com.facebook.react.ReactActivity;
+import android.os.Bundle;
+import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +13,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "wanwan_fanli_app";
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    SplashScreen.show(this);  // 添加这一句
+    super.onCreate(savedInstanceState);
   }
 }

@@ -1,7 +1,7 @@
 // obtained from react native tutorials
 
 // import { PixelRatio } from 'react-native';
-import {Dimensions} from 'react-native';
+import {Dimensions,Platform} from 'react-native';
 
 function pxToDp(amount) {
   //   ratio: PixelRatio.get(),
@@ -14,4 +14,8 @@ function pxToDp(amount) {
   return (amount * sceenWidth) / UIWidth;
 }
 
+const isIOS = () => Platform.OS === 'ios';
+const STATUS_BAR_HEIGHT = isIOS() ? 34 : 0;
+
 export default pxToDp;
+export {STATUS_BAR_HEIGHT};

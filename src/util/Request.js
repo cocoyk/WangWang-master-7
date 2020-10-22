@@ -6,9 +6,13 @@ import AsyncStorage from "@react-native-community/async-storage";
 import NavigationService from "../util/NavigationService.js";
 import SimpleToast from "react-native-simple-toast";
 import { APP_BASE_URL } from "../AppConfig";
+import VersionNumber from 'react-native-version-number';
+
+console.log('111',VersionNumber);
 
 async function request(api, params, successCallback, errorCallback) {
   params.channel_id = 2000;
+  params.appVersion = VersionNumber.appVersion;
   let appBaseUrl = APP_BASE_URL;
   if (api === "applogin") {
     appBaseUrl = "http://dl.wwzg01.com";
