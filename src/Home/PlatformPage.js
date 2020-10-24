@@ -13,16 +13,19 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  Animated,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-community/async-storage";
 import Toast from "react-native-simple-toast";
 import request from "../util/Request.js";
+import LoadingActivity from "../components/loadingActivity.js";
 
 function PlatformPage({ navigation, route }) {
+  let page_add = true;
+  const [showLoading, setShowLoading] = useState(false);
 
   const [count, setCount] = useState(0);
-  const [clickIndex, setClickIndex] = useState(0);
   const [currenIndex, setCurrenIndex] = useState(0);
   const [productList, setProductList] = useState([
     // {
@@ -128,18 +131,22 @@ function PlatformPage({ navigation, route }) {
   //const [shopType, setShopType] = useState(0); // shopType	int	 3旗舰店 4专卖店 5专营店
   const [isBrandGoods, setIsBrandGoods] = useState(0);    // isBrandGoods	int	是否只返回品牌商品 默认0 
   const [pageNo, setPageNo] = useState(1); // pageNo	int	页码
-  //const [sortNow, setSortNow] = useState(0); // sortNow	int	排序方式 待定 默认0 综合排序
+  const [sortNow, setSortNow] = useState(0); // sortNow	int	排序方式 待定 默认0 综合排序
   const [listId, setListId] = useState(""); // listId	string	扩展参数
   const [type, setType] = useState(0); // type	int	0商品 1店铺
 
+  const [fadeAnimationVal, setFadeAnimationVal] = useState(
+    new Animated.Value(0)
+  );
+
   const getAllGoods = () => {
-    //setShowLoading(true);
+    setShowLoading(true);
     AsyncStorage.getItem("token").then((val) => {
       const api = "getAllGoods";
       const param = {
         platform,
         pageNo,
-        sortNow:clickIndex,
+        sortNow,
         token:val
       };
 
@@ -147,19 +154,12 @@ function PlatformPage({ navigation, route }) {
         api,
         param,
         function (res) {
-          console.log('123',res);
-          //setShowLoading(false);
-          // let option_list = res.data.data.optList;
-          // for (var i = 0; i < option_list.length; i++) {
-          //   option_list[i].index = i;
-          // }
-          // setTypeList(option_list);
-          
+          setShowLoading(false);
           let goodList = res.data.data.goodsList || [];
           setProductList(goodList);
         },
         function (res) {
-          //setShowLoading(false);
+          setShowLoading(false);
           Toast.show("网络错误", Toast.SHORT);
         }
       );
@@ -167,7 +167,7 @@ function PlatformPage({ navigation, route }) {
   };
 
   useEffect(() => {
-    if (currenIndex < 25) {
+    if (currenIndex < 5) {
       navigation.setOptions({
         headerTintColor: "white",
         headerStyle: {
@@ -198,10 +198,29 @@ function PlatformPage({ navigation, route }) {
 
   useEffect(() => {
     getAllGoods();
-  }, [clickIndex,sort_type]);
+  }, [sortNow,sort_type]);
 
-  const onScroll = (event) => {
-    setCurrenIndex(event.nativeEvent.contentOffset.y);
+  const setPageAddToTrue = () => {
+    page_add = true;
+  };
+
+  const onScroll = async (event) => {
+    let contentHeight = event.nativeEvent.contentSize.height; //内容高度
+    let pageHeight = event.nativeEvent.layoutMeasurement.height; //屏幕高度
+    let scrollHeight = event.nativeEvent.contentOffset.y; //滑动距离
+
+    console.log(scrollHeight)
+    setCurrenIndex(scrollHeight);
+
+    if (page_add) {
+      if (
+        scrollHeight + pageHeight + 20 >= contentHeight &&
+        contentHeight >= pageHeight
+      ) {
+        setPage(page + 1);
+        page_add = false;
+      }
+    }
   };
 
   const MemoGoodsList = React.memo(({ productList }) => {
@@ -218,8 +237,8 @@ function PlatformPage({ navigation, route }) {
   //价格排序
   const sortCondition = ()=>{
     //如果当前选中的不是价格 则选中价格
-    if(clickIndex!==3){
-      setClickIndex(3);
+    if(sortNow!==3){
+      setSortNow(3);
     }else{
       //如果当前选中的是价格 切换价格正序倒叙排序
       if(sort_type===0){
@@ -232,7 +251,7 @@ function PlatformPage({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      {currenIndex < 25 && (
+      {currenIndex < 5 && (
         <View
           style={{
             flex: 1,
@@ -289,12 +308,12 @@ function PlatformPage({ navigation, route }) {
         }}
       >
         <View style={styles.condition_area}>
-          <TouchableOpacity activeOpacity={0.8} onPress={()=>{setClickIndex(0)}}>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=>{setSortNow(0)}}>
             <Text
               style={[
                 styles.condition,
                 {
-                  color: clickIndex === 0 ? "#ff5186" : "#3f4450",
+                  color: sortNow === 0 ? "#ff5186" : "#3f4450",
                 },
               ]}
             >
@@ -302,12 +321,12 @@ function PlatformPage({ navigation, route }) {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity={0.8} onPress={()=>{setClickIndex(2)}}>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=>{setSortNow(2)}}>
             <Text
               style={[
                 styles.condition,
                 {
-                  color: clickIndex === 2 ? "#ff5186" : "#3f4450",
+                  color: sortNow === 2 ? "#ff5186" : "#3f4450",
                 },
               ]}
             >
@@ -326,7 +345,7 @@ function PlatformPage({ navigation, route }) {
               style={[
                 styles.condition,
                 {
-                  color: clickIndex === 3 ? "#ff5186" : "#3f4450",
+                  color: sortNow === 3 ? "#ff5186" : "#3f4450",
                 },
               ]}
             >
@@ -338,7 +357,7 @@ function PlatformPage({ navigation, route }) {
                 height: pxToDp(28),
               }}
               source={
-                clickIndex === 3
+                sortNow === 3
                   ? sort_type === 3
                     ? require("../image/price_up.png")
                     : require("../image/price_down.png")
@@ -352,6 +371,29 @@ function PlatformPage({ navigation, route }) {
           <MemoGoodsList productList={productList} />
         </ScrollView>
       </View>
+      {showLoading === true && (
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{
+              opacity: 0.6,
+              width: pxToDp(150),
+              height: pxToDp(150),
+              borderRadius: pxToDp(20),
+              backgroundColor: "grey",
+            }}
+          >
+            <LoadingActivity />
+          </View>
+        </View>
+      )}
     </View>
   );
 }
